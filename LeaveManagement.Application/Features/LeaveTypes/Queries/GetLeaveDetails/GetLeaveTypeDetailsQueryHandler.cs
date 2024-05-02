@@ -33,7 +33,8 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveDetail
             var result = _mapper.Map<LeaveTypeDetailsDto>(details);
             if (result == null)
             {
-                return new Error("MappingError", "Failed to map leave type details.").ToResult().ConvertToResult<LeaveTypeDetailsDto>();
+                
+                return Result.Failure<LeaveTypeDetailsDto>(LeaveTypeErrors.MappingError);
             }
 
             return Result<LeaveTypeDetailsDto>.Success(result);

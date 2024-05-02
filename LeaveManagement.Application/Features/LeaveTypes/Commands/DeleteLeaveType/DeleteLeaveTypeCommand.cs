@@ -10,6 +10,10 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
 {
     public class DeleteLeaveTypeCommand : IRequest<Result<int>>
     {
+        public DeleteLeaveTypeCommand(int id)
+        {
+            Id = id;
+        }
         public int Id { get; set; }
     }
 }

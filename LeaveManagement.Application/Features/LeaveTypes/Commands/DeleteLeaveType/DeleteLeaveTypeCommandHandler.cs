@@ -1,4 +1,6 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType;
+using LeaveManagement.Application.Logging;
+using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using LeaveManagement.Domain.Repositories;
 using MediatR;
@@ -13,10 +15,12 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
     public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeCommand, Result<int>>
     {
         private readonly IGenericRepository<LeaveType> _repository;
+        private readonly IAppLogger<CreateLeaveTypeCommandHandler> _logger;
 
-        public DeleteLeaveTypeCommandHandler(IGenericRepository<Domain.LeaveTypes.LeaveType> repository)
+        public DeleteLeaveTypeCommandHandler(IGenericRepository<LeaveType> repository, IAppLogger<CreateLeaveTypeCommandHandler> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public async Task<Result<int>> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
@@ -24,7 +28,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
             var leaveType = await _repository.GetByIdAsync(request.Id);
             if (leaveType == null)
             {
-                
+                _logger.LogWarning("Validation failed: LeaveType doesn't exist.");
                 return Result.Failure<int>(LeaveTypeErrors.NotFound(request.Id));
             }
 

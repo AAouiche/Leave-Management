@@ -19,5 +19,9 @@ using System.Threading.Tasks;
 
         public static Error InvalidDays(int days) => new(
             "LeaveTypes.InvalidDays", $"The number of days '{days}' is not valid for a leave type");
+        public static readonly Error MappingError = new (
+            "MappingError", "Failed to map leave type details.");
+
+        //new Error("MappingError", "Failed to map leave type details.")
     }
 

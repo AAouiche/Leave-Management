@@ -12,18 +12,21 @@ namespace LeaveManagement.Infrastructure.DatabaseContext
 {
     public class LRDataBaseContext : DbContext
     {
-        public LRDataBaseContext(DbContextOptions<LRDataBaseContext> options) : base(options)
-        {
-            
-        }
+
+        
 
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveAllocation> LeaveAllocation { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
 
+        public LRDataBaseContext(DbContextOptions<LRDataBaseContext> options) : base(options)
+        {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(LRDataBaseContext).Assembly);
+            /*modelBuilder.ApplyConfigurationsFromAssembly(typeof(LRDataBaseContext).Assembly);
 
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType
@@ -33,8 +36,8 @@ namespace LeaveManagement.Infrastructure.DatabaseContext
                     Days = 10,
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
-                }
-            );
+                }*//*
+            );*/
 
             base.OnModelCreating(modelBuilder);
         }
