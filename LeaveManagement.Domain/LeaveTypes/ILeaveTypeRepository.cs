@@ -1,5 +1,5 @@
-﻿using LeaveManagement.Domain.LeaveTypes;
-using LeaveManagement.Domain.Repositories;
+﻿using LeaveManagement.Domain.Common;
+using LeaveManagement.Domain.LeaveTypes;
 
 namespace LeaveManagement.Domain.LeaveTypes
 {

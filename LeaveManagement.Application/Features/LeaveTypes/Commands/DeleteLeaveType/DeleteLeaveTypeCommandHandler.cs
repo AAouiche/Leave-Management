@@ -2,7 +2,6 @@
 using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
-using LeaveManagement.Domain.Repositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

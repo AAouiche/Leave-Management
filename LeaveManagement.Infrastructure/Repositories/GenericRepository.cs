@@ -1,6 +1,5 @@
 ﻿using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
-using LeaveManagement.Domain.Repositories;
 using LeaveManagement.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;

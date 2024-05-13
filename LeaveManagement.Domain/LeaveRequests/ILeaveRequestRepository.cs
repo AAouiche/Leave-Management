@@ -1,7 +1,7 @@
-﻿using LeaveManagement.Domain.Entities;
+﻿using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 
-namespace LeaveManagement.Domain.Repositories
+namespace LeaveManagement.Domain.LeaveRequests
 {
     public interface ILeaveRequestRepository : IGenericRepository<LeaveRequest>
     {

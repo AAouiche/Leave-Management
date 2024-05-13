@@ -1,9 +1,9 @@
 ﻿using LeaveManagement.Application.EmailService;
 using LeaveManagement.Application.Logging;
+using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveTypes;
 using LeaveManagement.Domain.Models.EmailMessage;
-using LeaveManagement.Domain.Repositories;
 using LeaveManagement.Infrastructure.DatabaseContext;
 using LeaveManagement.Infrastructure.EmailSender;
 using LeaveManagement.Infrastructure.Logging;

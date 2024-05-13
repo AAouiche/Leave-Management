@@ -48,7 +48,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveTy
             await _leaveTypeRepository.CreateAsync(leaveType);
             
 
-            return Result<Unit>.Success<Unit>(Unit.Value);
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

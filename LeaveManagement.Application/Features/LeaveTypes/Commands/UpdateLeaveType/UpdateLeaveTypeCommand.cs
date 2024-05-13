@@ -1,4 +1,5 @@
 ﻿using LeaveManagement.Domain.Common;
+using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.UpdateLeaveTy
 {
     public class UpdateLeaveTypeCommand : IRequest<Result<int>>
     {
+        public UpdateLeaveTypeCommand(LeaveType leaveType)
+        {
+            Id = leaveType.Id;
+            Name = leaveType.Name;
+            Days = leaveType.Days;
+        }
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Days { get; set; }

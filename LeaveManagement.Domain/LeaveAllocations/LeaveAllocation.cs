@@ -1,11 +1,8 @@
-﻿
-
-
-using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 
 
-namespace LeaveManagement.Domain.Entities
+namespace LeaveManagement.Domain.LeaveAllocations
 {
     public class LeaveAllocation : BaseEntity
     {

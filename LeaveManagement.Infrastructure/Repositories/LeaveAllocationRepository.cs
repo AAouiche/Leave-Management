@@ -1,6 +1,6 @@
-﻿using LeaveManagement.Domain.Entities;
+﻿using LeaveManagement.Domain.LeaveAllocation;
+using LeaveManagement.Domain.LeaveAllocations;
 using LeaveManagement.Domain.LeaveTypes;
-using LeaveManagement.Domain.Repositories;
 using LeaveManagement.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;

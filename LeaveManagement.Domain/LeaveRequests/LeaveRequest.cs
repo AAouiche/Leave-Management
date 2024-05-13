@@ -2,7 +2,7 @@
 using LeaveManagement.Domain.LeaveTypes;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LeaveManagement.Domain.Entities
+namespace LeaveManagement.Domain.LeaveRequests
 {
     public class LeaveRequest : BaseEntity
     {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveDetails;
+using LeaveManagement.Application.Features.LeaveTypes.Dtos;
 using LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveTypes;
 using LeaveManagement.Domain.LeaveTypes;
 using System;

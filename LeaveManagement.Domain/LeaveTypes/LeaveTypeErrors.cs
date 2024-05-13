@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+namespace LeaveManagement.Domain.LeaveTypes
+{
     public static class LeaveTypeErrors
     {
         public static Error NotFound(int leaveTypeId) => new(
@@ -19,9 +20,10 @@ using System.Threading.Tasks;
 
         public static Error InvalidDays(int days) => new(
             "LeaveTypes.InvalidDays", $"The number of days '{days}' is not valid for a leave type");
-        public static readonly Error MappingError = new (
+        public static readonly Error MappingError = new(
             "MappingError", "Failed to map leave type details.");
 
         //new Error("MappingError", "Failed to map leave type details.")
     }
+}
 

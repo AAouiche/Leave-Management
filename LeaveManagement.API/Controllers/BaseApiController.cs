@@ -14,7 +14,7 @@ namespace LeaveManagement.API.Controllers
 
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
-        public IActionResult HandleResult<T>(Result<T> result)
+        public ActionResult<T> HandleResult<T>(Result<T> result)
         {
             if (result.IsSuccess)
             {

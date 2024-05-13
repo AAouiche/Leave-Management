@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeaveManagement.Application.Features.LeaveTypes.Dtos;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;

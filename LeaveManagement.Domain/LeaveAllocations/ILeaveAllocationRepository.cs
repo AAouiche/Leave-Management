@@ -1,8 +1,8 @@
-﻿using LeaveManagement.Domain.Entities;
+﻿using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 
 
-namespace LeaveManagement.Domain.Repositories
+namespace LeaveManagement.Domain.LeaveAllocations
 {
     public interface ILeaveAllocationRepository : IGenericRepository<LeaveAllocation>
     {
