@@ -42,7 +42,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeav
             var leaveRequest = await _leaveRequestRepository.GetByIdAsync(request.Id);
             if (leaveRequest == null)
             {
-                return Result<Unit>.Failure<Unit>(new Error("NotFound", $"Leave request with ID {request.Id} not found."));
+                return Result<Unit>.Failure<Unit>(LeaveRequestErrors.NotFound(request.Id));
             }
 
             var validator = new UpdateLeaveRequestCommandValidator(_leaveTypeRepository, _leaveRequestRepository);
@@ -50,17 +50,18 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeav
 
             if (validationResult.Errors.Any())
             {
-                return Result<Unit>.Failure<Unit>(new Error("ValidationFailure", "Invalid Leave Request"));
+                _appLogger.LogWarning("Validation failed for command: {Command}", request);
+                return Result<Unit>.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Invalid Leave Request"));
             }
 
             _mapper.Map(request, leaveRequest);
-            await _leaveRequestRepository.UpdateAsync(leaveRequest);
-            
+             await _leaveRequestRepository.UpdateAsync(leaveRequest);
+           
 
-            // send confirmation email
+            
             var email = new Email
             {
-                Reciever = string.Empty, 
+                Reciever = string.Empty,
                 MessageBody = $"Your leave request for {request.StartDate:D} to {request.EndDate:D} has been updated successfully.",
                 Subject = "Leave Request Updated"
             };
@@ -69,7 +70,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeav
             if (!emailSent)
             {
                 _appLogger.LogWarning("Failed to send confirmation email.");
-                return Result<Unit>.Failure<Unit>(new Error("EmailFailure", "Failed to send confirmation email."));
+                return Result<Unit>.Failure<Unit>(LeaveRequestErrors.EmailFailure(email.Reciever));
             }
 
             return Result<Unit>.Success(Unit.Value);

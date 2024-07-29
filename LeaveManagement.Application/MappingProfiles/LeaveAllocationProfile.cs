@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagement.Application.Features.LeaveAllocations.Commands.CreateLeaveAllocation;
+using LeaveManagement.Application.Features.LeaveAllocations.Commands.UpdateLeaveAllocation;
 using LeaveManagement.Application.Features.LeaveAllocations.Dtos;
 using LeaveManagement.Domain.LeaveAllocation;
 using LeaveManagement.Domain.LeaveAllocations;

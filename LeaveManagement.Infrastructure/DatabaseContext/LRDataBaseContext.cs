@@ -1,6 +1,8 @@
 ﻿using LeaveManagement.Domain.Common;
-using LeaveManagement.Domain.LeaveAllocation;
-using LeaveManagement.Domain.LeaveRequest;
+
+using LeaveManagement.Domain.LeaveAllocations;
+
+using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
 using Microsoft.EntityFrameworkCore;
 using System;

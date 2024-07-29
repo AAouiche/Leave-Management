@@ -23,11 +23,10 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.DeleteLeav
             var leaveRequest = await _leaveRequestRepository.GetByIdAsync(request.Id);
             if (leaveRequest == null)
             {
-                return Result.Failure<Unit>(new Error("NotFound", $"Leave request with ID {request.Id} not found."));
+                return Result.Failure<Unit>(LeaveRequestErrors.NotFound(request.Id));
             }
 
             await _leaveRequestRepository.DeleteAsync(leaveRequest);
-            
 
             return Result<Unit>.Success(Unit.Value);
         }

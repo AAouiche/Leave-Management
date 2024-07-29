@@ -1,4 +1,5 @@
-﻿using LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType;
+﻿using FluentValidation;
+using LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType;
 using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
@@ -14,16 +15,30 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
     public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeCommand, Result<int>>
     {
         private readonly IGenericRepository<LeaveType> _repository;
-        private readonly IAppLogger<CreateLeaveTypeCommandHandler> _logger;
+        private readonly IAppLogger<DeleteLeaveTypeCommandHandler> _logger;
+        private readonly IValidator<DeleteLeaveTypeCommand> _validator;
 
-        public DeleteLeaveTypeCommandHandler(IGenericRepository<LeaveType> repository, IAppLogger<CreateLeaveTypeCommandHandler> logger)
+        public DeleteLeaveTypeCommandHandler(
+            IGenericRepository<LeaveType> repository,
+            IAppLogger<DeleteLeaveTypeCommandHandler> logger,
+            IValidator<DeleteLeaveTypeCommand> validator)
         {
             _repository = repository;
             _logger = logger;
+            _validator = validator;
         }
 
         public async Task<Result<int>> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
         {
+            // Validate the command
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToArray();
+                _logger.LogWarning("Validation failed for command: {Command}", request);
+                return Result.Failure<int>(LeaveTypeErrors.ValidationError(errors));
+            }
+
             var leaveType = await _repository.GetByIdAsync(request.Id);
             if (leaveType == null)
             {
@@ -32,6 +47,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
             }
 
             await _repository.DeleteAsync(leaveType);
+            _logger.LogInformation($"LeaveType with Id {request.Id} deleted successfully.");
             return Result<int>.Success(request.Id);
         }
     }

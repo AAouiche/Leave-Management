@@ -9,7 +9,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveTypes
     public class LeaveTypeDto
     {
         public int Id { get; set; }
-        public string name {  get; set; } = string.Empty;   
+        public string Name {  get; set; } = string.Empty;   
         public int Days { get; set; }
     }
 }

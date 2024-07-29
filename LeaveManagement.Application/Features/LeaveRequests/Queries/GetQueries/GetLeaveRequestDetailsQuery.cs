@@ -1,19 +1,21 @@
-﻿using System;
+﻿using LeaveManagement.Application.Features.LeaveRequests.Dtos;
+using LeaveManagement.Domain.Common;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
+namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveRequestDetails
 {
-    public class GetLeaveRequestDetailsQuery
+    public class GetLeaveRequestDetailsQuery : IRequest<Result<LeaveRequestDetailsDto>>
     {
         public GetLeaveRequestDetailsQuery(int id)
         {
             LeaveRequestId = id;
         }
-        public int LeaveRequestId { get; set; }
 
-        
+        public int LeaveRequestId { get; set; }
     }
 }

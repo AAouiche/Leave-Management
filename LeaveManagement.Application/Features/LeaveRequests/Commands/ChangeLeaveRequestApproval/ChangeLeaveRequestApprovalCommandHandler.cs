@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagement.Application.EmailService;
+using LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeaveRequest;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
@@ -30,7 +31,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.ChangeLeav
             _leaveRequestRepository = leaveRequestRepository;
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
-            this._emailSender = emailSender;
+            _emailSender = emailSender;
         }
 
         public async Task<Result<Unit>> Handle(ChangeLeaveRequestApprovalCommand request, CancellationToken cancellationToken)
@@ -38,7 +39,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.ChangeLeav
             var leaveRequest = await _leaveRequestRepository.GetByIdAsync(request.Id);
             if (leaveRequest == null)
             {
-                return Result.Failure<Unit>(new Error("NotFound", $"Leave request with ID {request.Id} not found."));
+                return Result.Failure<Unit>(LeaveRequestErrors.NotFound(request.Id));
             }
 
             leaveRequest.Approved = request.Approved;
@@ -46,15 +47,15 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.ChangeLeav
 
             var email = new Email
             {
-                Reciever = string.Empty, 
-                MessageBody = $"The approval status for your leave request from {leaveRequest.StartDate:D} to {leaveRequest.EndDate:D} has been updated.",
-                Subject = "Leave Request Approval Status Updated"
+                Reciever = string.Empty,
+                MessageBody = $"Your leave request has been {(request.Approved ? "approved" : "denied")}.",
+                Subject = "Leave Request Approval Status Changed"
             };
 
             var emailResult = await _emailSender.SendEmail(email);
             if (!emailResult)
             {
-                return Result.Failure<Unit>(new Error("EmailFailure", "Failed to send confirmation email."));
+                return Result.Failure<Unit>(LeaveRequestErrors.EmailFailure(email.Reciever));
             }
 
             return Result<Unit>.Success(Unit.Value);

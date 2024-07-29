@@ -1,4 +1,5 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Application.Features.LeaveTypes.Dtos;
+using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using System;
@@ -11,7 +12,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveTy
 {
     public class CreateLeaveTypeCommand : IRequest<Result<Unit>>
     {
-        public CreateLeaveTypeCommand(CreateLeaveTypeCommand leaveType)
+        public CreateLeaveTypeCommand(CreateLeaveTypeDto leaveType)
         {
             Name = leaveType.Name;
             Days = leaveType.Days;

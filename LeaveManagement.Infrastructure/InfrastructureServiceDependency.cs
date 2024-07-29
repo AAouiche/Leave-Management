@@ -2,6 +2,8 @@
 using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.LeaveAllocations;
+using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
 using LeaveManagement.Domain.Models.EmailMessage;
 using LeaveManagement.Infrastructure.DatabaseContext;
@@ -24,16 +26,16 @@ namespace LeaveManagement.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddDbContext<LRDataBaseContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("LeaveManagementConnectionString")));
-               
+
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
+            services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
+            services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailSender, EmailService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagement.Application.Features.LeaveRequests.Dtos;
+using LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveRequestDetails;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveRequests;
 using MediatR;
@@ -24,10 +25,10 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
 
         public async Task<Result<LeaveRequestDetailsDto>> Handle(GetLeaveRequestDetailsQuery request, CancellationToken cancellationToken)
         {
-            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.Id);
+            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.LeaveRequestId);
             if (leaveRequest == null)
             {
-                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(request.Id));
+                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(request.LeaveRequestId));
             }
 
             var leaveRequestDetails = _mapper.Map<LeaveRequestDetailsDto>(leaveRequest);

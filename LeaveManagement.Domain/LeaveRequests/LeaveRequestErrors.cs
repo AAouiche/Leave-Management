@@ -19,7 +19,8 @@ namespace LeaveManagement.Domain.LeaveRequests
             "LeaveRequests.UpdateFailure", $"Failed to update the leave request with Id = '{leaveRequestId}'");
 
         public static Error EmailFailure(string email) => new(
-            "LeaveRequests.EmailFailure", $"Failed to send an email to '{email}'");
+            "LeaveRequests.EmailFailure", $"Failed to send confirmation email.");
+       
 
         public static readonly Error UnauthorizedAccess = new(
             "LeaveRequests.UnauthorizedAccess", "Unauthorized access to the leave request");

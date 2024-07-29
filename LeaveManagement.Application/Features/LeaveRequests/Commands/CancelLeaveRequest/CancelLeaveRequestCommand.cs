@@ -10,6 +10,10 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeav
 {
     public class CancelLeaveRequestCommand : IRequest<Result<Unit>>
     {
+        public CancelLeaveRequestCommand(int id)
+        {
+            Id = id;
+        }
         public int Id { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using LeaveManagement.Application.Logging;
+using FluentValidation;
 
 
 namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType
@@ -16,20 +17,24 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveTy
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IAppLogger<CreateLeaveTypeCommandHandler> _logger;
+        private readonly IValidator<CreateLeaveTypeCommand> _validator;
 
-        public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepository , IAppLogger<CreateLeaveTypeCommandHandler> logger)
+        public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepository, IAppLogger<CreateLeaveTypeCommandHandler> logger, IValidator<CreateLeaveTypeCommand> validator)
         {
             _leaveTypeRepository = leaveTypeRepository;
             _logger = logger;
+            _validator = validator;
         }
 
         public async Task<Result<Unit>> Handle(CreateLeaveTypeCommand command, CancellationToken cancellationToken)
         {
             
-            if (string.IsNullOrWhiteSpace(command.Name))
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
             {
-                _logger.LogWarning("Validation failed: Name is required for creating a new leave type.");
-                return Result.Failure<Unit>(new Error("ValidationError", "Name is required."));
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToArray();
+                _logger.LogWarning("Validation failed for command: {Command}", command);
+                return Result.Failure<Unit>(LeaveTypeErrors.ValidationError(errors));
             }
 
             
@@ -39,6 +44,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveTy
                 return Result.Failure<Unit>(LeaveTypeErrors.NameNotUnique);
             }
 
+            
             var leaveType = new LeaveType
             {
                 Name = command.Name,
@@ -46,8 +52,8 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveTy
             };
 
             await _leaveTypeRepository.CreateAsync(leaveType);
-            
 
+            _logger.LogInformation("LeaveType '{Name}' created successfully.", command.Name);
             return Result<Unit>.Success(Unit.Value);
         }
     }

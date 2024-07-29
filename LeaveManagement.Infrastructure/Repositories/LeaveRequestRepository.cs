@@ -1,8 +1,10 @@
-﻿using LeaveManagement.Domain.LeaveRequest;
+﻿
+using LeaveManagement.Domain.LeaveAllocations;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
 using LeaveManagement.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace LeaveManagement.Infrastructure.Repositories
         public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails()
         {
             var leaveRequests = await _context.LeaveRequests
+                .Where(q => !string.IsNullOrEmpty(q.RequestingEmployeeId))
                 .Include(q => q.LeaveType)
                 .ToListAsync();
             return leaveRequests;

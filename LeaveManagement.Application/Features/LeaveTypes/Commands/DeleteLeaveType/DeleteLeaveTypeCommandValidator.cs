@@ -12,7 +12,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
         public DeleteLeaveTypeCommandValidator()
         {
             RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Invalid ID. ID must be greater than zero.");
+                .GreaterThan(0).WithMessage("Invalid ID");
         }
     }
 }

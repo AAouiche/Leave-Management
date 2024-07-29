@@ -10,7 +10,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Dtos
     public class LeaveRequestDetailsDto
     {
         public int Id { get; set; }
-        public Employee Employee { get; set; }
+        //public Employee Employee { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RequestingEmployeeId { get; set; }

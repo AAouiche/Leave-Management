@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LeaveManagement.Domain.LeaveAllocation;
+using LeaveManagement.Domain.LeaveAllocations;
 
 namespace LeaveManagement.Infrastructure.Configurations
 {

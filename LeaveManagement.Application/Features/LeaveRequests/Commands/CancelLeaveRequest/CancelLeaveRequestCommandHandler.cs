@@ -32,12 +32,11 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeav
             }
 
             leaveRequest.Cancelled = true;
-            
+            await _leaveRequestRepository.UpdateAsync(leaveRequest); 
 
-            
             var email = new Email
             {
-                Reciever = string.Empty, 
+                Reciever = string.Empty,
                 MessageBody = $"Your leave request for {leaveRequest.StartDate:D} to {leaveRequest.EndDate:D} " +
                         $"has been cancelled successfully.",
                 Subject = "Leave Request Cancelled"

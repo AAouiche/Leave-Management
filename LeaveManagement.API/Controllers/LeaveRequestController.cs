@@ -5,7 +5,9 @@ using LeaveManagement.Application.Features.LeaveRequests.Commands.DeleteLeaveReq
 using LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeaveRequest;
 using LeaveManagement.Application.Features.LeaveRequests.Dtos;
 using LeaveManagement.Application.Features.LeaveRequests.Queries.GetAllQueries;
+using LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveRequestDetails;
 using LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,38 +53,38 @@ namespace LeaveManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Update(int id, UpdateLeaveRequestCommand leaveRequest)
+        public async Task<ActionResult<Unit>> Update(UpdateLeaveRequestCommand leaveRequest)
         {
-            if (leaveRequest == null || id != leaveRequest.Id)
+            if (leaveRequest == null )
             {
                 return BadRequest("Invalid data.");
             }
 
-            leaveRequest.Id = id; // Ensure the ID from the route is used
+            
             var result = await Mediator.Send(leaveRequest);
             return HandleResult(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
+        public async Task<ActionResult<Unit>> Delete(int id)
         {
             var command = new DeleteLeaveRequestCommand(id);
             var result = await Mediator.Send(command);
             return HandleResult(result);
         }
 
-        // Endpoint to cancel a leave request
+        
         [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> Cancel(int id)
+        public async Task<ActionResult<Unit>> Cancel(int id)
         {
             var command = new CancelLeaveRequestCommand { Id = id };
             var result = await Mediator.Send(command);
             return HandleResult(result);
         }
 
-        // Endpoint to change the approval status of a leave request
+        
         [HttpPost("{id}/approve")]
-        public async Task<IActionResult> ChangeApproval([FromBody] ChangeLeaveRequestApprovalCommand command)
+        public async Task<ActionResult<Unit>> ChangeApproval([FromBody] ChangeLeaveRequestApprovalCommand command)
         {
             var result = await Mediator.Send(command);
             return HandleResult(result);
