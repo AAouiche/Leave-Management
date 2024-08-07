@@ -17,7 +17,7 @@ namespace LeaveManagement.API.Controllers
     [ApiController]
     public class LeaveRequestController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("getall")]
         public async Task<ActionResult<List<LeaveRequestListDto>>> GetAll()
         {
             var query = new GetAllLeaveRequestQuery();
@@ -25,7 +25,7 @@ namespace LeaveManagement.API.Controllers
             return HandleResult<List<LeaveRequestListDto>>(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<LeaveRequestDetailsDto>> Get(int id)
         {
             var query = new GetLeaveRequestDetailsQuery(id);
@@ -33,7 +33,7 @@ namespace LeaveManagement.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(CreateLeaveRequestCommand leaveRequest)
         {
             if (leaveRequest == null)
@@ -52,20 +52,19 @@ namespace LeaveManagement.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<ActionResult<Unit>> Update(UpdateLeaveRequestCommand leaveRequest)
         {
-            if (leaveRequest == null )
+            if (leaveRequest == null)
             {
                 return BadRequest("Invalid data.");
             }
 
-            
             var result = await Mediator.Send(leaveRequest);
             return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult<Unit>> Delete(int id)
         {
             var command = new DeleteLeaveRequestCommand(id);
@@ -73,17 +72,15 @@ namespace LeaveManagement.API.Controllers
             return HandleResult(result);
         }
 
-        
-        [HttpPost("{id}/cancel")]
+        [HttpPost("cancel/{id}")]
         public async Task<ActionResult<Unit>> Cancel(int id)
         {
-            var command = new CancelLeaveRequestCommand { Id = id };
+            var command = new CancelLeaveRequestCommand(id);
             var result = await Mediator.Send(command);
             return HandleResult(result);
         }
 
-        
-        [HttpPost("{id}/approve")]
+        [HttpPost("approve/{id}")]
         public async Task<ActionResult<Unit>> ChangeApproval([FromBody] ChangeLeaveRequestApprovalCommand command)
         {
             var result = await Mediator.Send(command);

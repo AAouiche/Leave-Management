@@ -6,17 +6,36 @@ using System.Threading.Tasks;
 
 namespace LeaveManagement.Domain.Common
 {
-    public record Error(string Code, string Description)
+    public record Error
     {
-        public static readonly Error None = new(string.Empty, string.Empty);
-        public static readonly Error NullValue = new("Error.NullValue", "Null value was provided");
-        
+        public static readonly Error None = new(string.Empty, string.Empty , ErrorType.Failure);
+        public static readonly Error NullValue = new("Error.NullValue", "Null value was provided", ErrorType.Failure);
 
-        public static implicit operator Result(Error error) => Result.Failure(error);
-
-        public Result ToResult()
+        private Error(string code, string description, ErrorType errorType)
         {
-            return Result.Failure(this);
+            Code = code;
+            Description = description;
+            ErrorType = errorType;
         }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public ErrorType ErrorType { get; set; }
+
+        // Static methods for creating specific error types
+        public static Error NotFound(string code, string description) => new Error(code, description, ErrorType.NotFound);
+
+        public static Error Validation(string code, string description) => new Error(code, description, ErrorType.Validation);
+
+        public static Error Conflict(string code, string description) => new Error(code, description, ErrorType.Conflict);
+
+        public static Error Failure(string code, string description) => new Error(code, description, ErrorType.Failure);
+    }
+
+    public enum ErrorType
+    {
+        Failure = 0,
+        Validation = 1,
+        NotFound = 2,
+        Conflict = 3,
     }
 }

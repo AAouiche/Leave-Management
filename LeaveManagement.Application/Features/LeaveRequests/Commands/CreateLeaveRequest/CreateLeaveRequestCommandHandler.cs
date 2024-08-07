@@ -36,7 +36,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
 
             if (validationResult.Errors.Any())
             {
-                return Result.Failure<Unit>(new Error("ValidationFailure", "Invalid Leave Request"));
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Invalid Leave Request"));
             }
 
             
@@ -56,7 +56,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
             var emailResult = await _emailSender.SendEmail(email);
             if (!emailResult)
             {
-                return Result.Failure<Unit>(new Error("EmailFailure", "Failed to send confirmation email."));
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Invalid Leave Request"));
             }
 
             return Result<Unit>.Success(Unit.Value);

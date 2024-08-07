@@ -9,22 +9,28 @@ namespace LeaveManagement.Domain.LeaveRequests
 {
     public static class LeaveRequestErrors
     {
-        public static Error NotFound(int leaveRequestId) => new(
-            "LeaveRequests.NotFound", $"The leave request with the Id = '{leaveRequestId}' was not found");
+        public static Error NotFound(int leaveRequestId) => Error.NotFound(
+            "LeaveRequests.NotFound",
+            $"The leave request with the Id = '{leaveRequestId}' was not found");
 
-        public static Error ValidationFailure(string details) => new(
-            "LeaveRequests.ValidationFailure", $"Validation failed: {details}");
+        public static Error ValidationFailure(string details) => Error.Validation(
+            "LeaveRequests.ValidationFailure",
+            $"Validation failed: {details}");
 
-        public static Error UpdateFailure(int leaveRequestId) => new(
-            "LeaveRequests.UpdateFailure", $"Failed to update the leave request with Id = '{leaveRequestId}'");
+        public static Error UpdateFailure(int leaveRequestId) => Error.Failure(
+            "LeaveRequests.UpdateFailure",
+            $"Failed to update the leave request with Id = '{leaveRequestId}'");
 
-        public static Error EmailFailure(string email) => new(
-            "LeaveRequests.EmailFailure", $"Failed to send confirmation email.");
-       
+        public static Error EmailFailure(string email) => Error.Failure(
+            "LeaveRequests.EmailFailure",
+            $"Failed to send confirmation email to '{email}'");
 
-        public static readonly Error UnauthorizedAccess = new(
-            "LeaveRequests.UnauthorizedAccess", "Unauthorized access to the leave request");
-        public static Error MappingFailure() => new(
-            "LeaveRequests.MappingFailure", "Failed to map the leave request details.");
+        public static readonly Error UnauthorizedAccess = Error.Failure(
+            "LeaveRequests.UnauthorizedAccess",
+            "Unauthorized access to the leave request");
+
+        public static Error MappingFailure() => Error.Failure(
+            "LeaveRequests.MappingFailure",
+            "Failed to map the leave request details.");
     }
 }

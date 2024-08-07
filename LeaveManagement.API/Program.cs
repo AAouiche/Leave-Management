@@ -23,8 +23,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddDbContext<LRDataBaseContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("LeaveManagementConnectionString")));
+/*builder.Services.AddDbContext<LRDataBaseContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("LeaveManagementConnectionString")));*/
 
 builder.Services.AddCors();
 

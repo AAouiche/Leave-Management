@@ -1,5 +1,6 @@
 ﻿using LeaveManagement.Application.EmailService;
 using LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeaveRequest;
+using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
 using Moq;
@@ -16,14 +17,18 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
         private readonly Mock<ILeaveRequestRepository> _mockLeaveRequestRepository;
         private readonly Mock<IEmailSender> _mockEmailSender;
         private readonly CancelLeaveRequestCommandHandler _handler;
+        private readonly Mock<IAppLogger<CancelLeaveRequestCommandHandler>> _logger;
 
         public CancelLeaveRequestCommandHandlerTests()
         {
             _mockLeaveRequestRepository = new Mock<ILeaveRequestRepository>();
             _mockEmailSender = new Mock<IEmailSender>();
+            _logger = new Mock<IAppLogger<CancelLeaveRequestCommandHandler>>();
+
             _handler = new CancelLeaveRequestCommandHandler(
                 _mockLeaveRequestRepository.Object,
-                _mockEmailSender.Object
+                _mockEmailSender.Object,
+                _logger.Object
             );
         }
 

@@ -27,7 +27,7 @@ namespace LeaveManagement.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<LRDataBaseContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("LeaveManagementConnectionString")));
+                options.UseSqlServer("Server=DESKTOP-60B87CQ\\MSSQLSERVER01;Database=LeaveManagementDB;Trusted_Connection=True;"));
 
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();

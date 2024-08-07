@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.LeaveAllocation;
 using LeaveManagement.Domain.LeaveAllocations;
@@ -17,39 +18,45 @@ namespace LeaveManagement.Application.Features.LeaveAllocations.Commands.UpdateL
         private readonly IMapper _mapper;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly IAppLogger<UpdateLeaveAllocationCommandHandler> _logger;
 
         public UpdateLeaveAllocationCommandHandler(
             IMapper mapper,
             ILeaveTypeRepository leaveTypeRepository,
-            ILeaveAllocationRepository leaveAllocationRepository)
+            ILeaveAllocationRepository leaveAllocationRepository,
+            IAppLogger<UpdateLeaveAllocationCommandHandler> logger)
         {
             _mapper = mapper;
             this._leaveTypeRepository = leaveTypeRepository;
             this._leaveAllocationRepository = leaveAllocationRepository;
+            _logger = logger;
         }
 
         public async Task<Result<Unit>> Handle(UpdateLeaveAllocationCommand request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Validating the update leave allocation request for ID {request.Id}.");
+
             var validator = new UpdateLeaveAllocationCommandValidator(_leaveTypeRepository, _leaveAllocationRepository);
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
             {
-                var validationErrors = validationResult.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
-                string errorMessages = String.Join(", ", validationErrors);
-                return Result.Failure<Unit>(new Error("ValidationFailure", $"Invalid Leave Allocation: {errorMessages}"));
+                _logger.LogWarning($"Validation failed for update leave allocation request for ID {request.Id}.");
+                return Result.Failure<Unit>(LeaveAllocationErrors.ValidationFailure(validationResult.Errors));
             }
 
             var leaveAllocation = await _leaveAllocationRepository.GetByIdAsync(request.Id);
             if (leaveAllocation == null)
             {
+                _logger.LogWarning($"Leave allocation with ID {request.Id} not found.");
                 return Result.Failure<Unit>(LeaveAllocationErrors.NotFound(request.Id));
             }
 
             _mapper.Map(request, leaveAllocation);
 
             await _leaveAllocationRepository.UpdateAsync(leaveAllocation);
-            
+
+            _logger.LogInformation($"Leave allocation with ID {request.Id} updated successfully.");
 
             return Result<Unit>.Success(Unit.Value);
         }

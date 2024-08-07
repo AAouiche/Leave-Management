@@ -82,7 +82,7 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
             {
                 Id = 1,
                 StartDate = DateTime.Now.AddDays(10),
-                EndDate = DateTime.Now.AddDays(1), // Invalid date to trigger validation failure
+                EndDate = DateTime.Now.AddDays(1), 
                 LeaveTypeId = 1
             };
 
