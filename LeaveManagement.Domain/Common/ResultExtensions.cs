@@ -37,6 +37,7 @@ namespace LeaveManagement.Domain.Common
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
+            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError,
         };
 
@@ -45,6 +46,7 @@ namespace LeaveManagement.Domain.Common
             ErrorType.Validation => "Bad Request",
             ErrorType.NotFound => "Not Found",
             ErrorType.Conflict => "Conflict",
+            ErrorType.Unauthorized => "Unauthorized",
             _ => "Server Failure",
         };
 
@@ -53,6 +55,7 @@ namespace LeaveManagement.Domain.Common
             ErrorType.Validation => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             ErrorType.NotFound => "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             ErrorType.Conflict => "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+            ErrorType.Unauthorized => "https://tools.ietf.org/html/rfc7235#section-3.1",
             _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
         };
     }

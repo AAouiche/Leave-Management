@@ -35,10 +35,10 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
                 return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.ValidationFailure(validationResult.Errors.First().ErrorMessage));
             }
 
-            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.LeaveRequestId);
+            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.Id);
             if (leaveRequest == null)
             {
-                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(request.LeaveRequestId));
+                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(request.Id));
             }
 
             var leaveRequestDetails = _mapper.Map<LeaveRequestDetailsDto>(leaveRequest);

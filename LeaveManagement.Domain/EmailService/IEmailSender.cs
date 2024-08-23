@@ -1,11 +1,12 @@
-﻿using LeaveManagement.Domain.Entities.Email;
+﻿
+using LeaveManagement.Domain.Entities.Email;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Application.EmailService
+namespace LeaveManagement.Domain.EmailService
 {
     public interface IEmailSender
     {

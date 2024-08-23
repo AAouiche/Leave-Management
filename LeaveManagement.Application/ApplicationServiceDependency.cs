@@ -20,15 +20,15 @@ namespace LeaveManagement.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+            var assembly = typeof(ApplicationServiceDepenedency).Assembly;
+            services.AddMediatR(configuration =>
+                configuration.RegisterServicesFromAssembly(assembly));
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             //validation
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
-            services.AddTransient<IValidator<DeleteLeaveTypeCommand>, DeleteLeaveTypeCommandValidator>();
-            services.AddTransient<IValidator<UpdateLeaveTypeCommand>, UpdateLeaveTypeCommandValidator>();
-            services.AddTransient<IValidator<GetLeaveTypesDetailsQuery>, GetLeaveTypesDetailsQueryValidator>();
-
+            
 
 
 

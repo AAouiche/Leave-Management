@@ -1,6 +1,7 @@
-﻿using LeaveManagement.Application.EmailService;
+﻿
 using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
 using MediatR;

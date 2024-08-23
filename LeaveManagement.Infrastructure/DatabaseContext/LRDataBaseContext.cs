@@ -1,9 +1,10 @@
 ﻿using LeaveManagement.Domain.Common;
-
+using LeaveManagement.Domain.Identity;
 using LeaveManagement.Domain.LeaveAllocations;
 
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagement.Infrastructure.DatabaseContext
 {
-    public class LRDataBaseContext : DbContext
+    public class LRDataBaseContext : IdentityDbContext<ApplicationUser>
     {
 
         

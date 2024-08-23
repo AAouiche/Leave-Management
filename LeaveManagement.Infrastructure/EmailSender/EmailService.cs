@@ -1,5 +1,6 @@
 ﻿
-using LeaveManagement.Application.EmailService;
+
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.Models.EmailMessage;
 using Microsoft.Extensions.Options;

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
 using FluentValidation;
-using LeaveManagement.Application.EmailService;
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeaveRequest;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
 using Moq;
@@ -13,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using LeaveManagement.Domain.Entities.Email;
 
 namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
 {

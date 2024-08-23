@@ -1,7 +1,10 @@
-﻿using LeaveManagement.Application.EmailService;
+﻿
 using LeaveManagement.Application.Logging;
 using LeaveManagement.Domain.Common;
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.Identity;
+using LeaveManagement.Domain.Interfaces;
 using LeaveManagement.Domain.LeaveAllocations;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
@@ -10,6 +13,7 @@ using LeaveManagement.Infrastructure.DatabaseContext;
 using LeaveManagement.Infrastructure.EmailSender;
 using LeaveManagement.Infrastructure.Logging;
 using LeaveManagement.Infrastructure.Repositories;
+using LeaveManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +31,7 @@ namespace LeaveManagement.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<LRDataBaseContext>(options =>
-                options.UseSqlServer("Server=DESKTOP-60B87CQ\\MSSQLSERVER01;Database=LeaveManagementDB;Trusted_Connection=True;"));
+                options.UseSqlServer(configuration.GetConnectionString("LeaveManagementConnectionString")));
 
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
@@ -36,6 +40,8 @@ namespace LeaveManagement.Infrastructure
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailSender, EmailService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             return services;
         }

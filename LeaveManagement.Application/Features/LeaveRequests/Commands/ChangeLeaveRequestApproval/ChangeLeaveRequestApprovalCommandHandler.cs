@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LeaveManagement.Application.EmailService;
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeaveRequest;
 using LeaveManagement.Domain.Common;
 using LeaveManagement.Domain.Entities.Email;

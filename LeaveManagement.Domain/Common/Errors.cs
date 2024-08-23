@@ -8,7 +8,7 @@ namespace LeaveManagement.Domain.Common
 {
     public record Error
     {
-        public static readonly Error None = new(string.Empty, string.Empty , ErrorType.Failure);
+        public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
         public static readonly Error NullValue = new("Error.NullValue", "Null value was provided", ErrorType.Failure);
 
         private Error(string code, string description, ErrorType errorType)
@@ -21,7 +21,7 @@ namespace LeaveManagement.Domain.Common
         public string Description { get; set; }
         public ErrorType ErrorType { get; set; }
 
-        // Static methods for creating specific error types
+        
         public static Error NotFound(string code, string description) => new Error(code, description, ErrorType.NotFound);
 
         public static Error Validation(string code, string description) => new Error(code, description, ErrorType.Validation);
@@ -29,6 +29,8 @@ namespace LeaveManagement.Domain.Common
         public static Error Conflict(string code, string description) => new Error(code, description, ErrorType.Conflict);
 
         public static Error Failure(string code, string description) => new Error(code, description, ErrorType.Failure);
+
+        public static Error Unauthorized(string code, string description) => new Error(code, description, ErrorType.Unauthorized);
     }
 
     public enum ErrorType
@@ -37,5 +39,6 @@ namespace LeaveManagement.Domain.Common
         Validation = 1,
         NotFound = 2,
         Conflict = 3,
+        Unauthorized = 4, 
     }
 }

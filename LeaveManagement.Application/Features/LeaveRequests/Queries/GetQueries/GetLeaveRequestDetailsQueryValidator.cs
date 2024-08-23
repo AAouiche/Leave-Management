@@ -14,8 +14,8 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
     {
         public GetLeaveRequestDetailsQueryValidator()
         {
-            RuleFor(x => x.LeaveRequestId)
-                .GreaterThan(0).WithMessage("LeaveRequestId must be greater than zero.");
+            RuleFor(x => x.Id)
+                .GreaterThan(0).WithMessage("Id must be greater than zero.");
         }
     }
 }

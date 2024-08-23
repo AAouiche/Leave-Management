@@ -11,11 +11,11 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveReq
 {
     public class GetLeaveRequestDetailsQuery : IRequest<Result<LeaveRequestDetailsDto>>
     {
-        public GetLeaveRequestDetailsQuery(int id)
+        public GetLeaveRequestDetailsQuery(int LeaveRequestId)
         {
-            LeaveRequestId = id;
+            Id = LeaveRequestId;
         }
 
-        public int LeaveRequestId { get; set; }
+        public int Id { get; set; }
     }
 }

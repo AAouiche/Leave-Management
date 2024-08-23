@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using LeaveManagement.Application.EmailService;
+using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Application.Features.LeaveRequests.Commands.ChangeLeaveRequestApproval;
-using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.EmailMessage;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
 using Moq;

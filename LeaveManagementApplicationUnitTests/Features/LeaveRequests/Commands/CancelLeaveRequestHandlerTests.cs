@@ -1,7 +1,7 @@
-﻿using LeaveManagement.Application.EmailService;
+﻿using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeaveRequest;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.EmailMessage;
 using LeaveManagement.Domain.LeaveRequests;
 using Moq;
 using System;

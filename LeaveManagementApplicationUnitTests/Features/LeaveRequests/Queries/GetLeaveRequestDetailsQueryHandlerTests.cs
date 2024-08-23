@@ -38,12 +38,12 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Queries
         {
             // Arrange
             var query = new GetLeaveRequestDetailsQuery(1);
-            var leaveRequest = new LeaveRequest { Id = query.LeaveRequestId };
-            var leaveRequestDetailsDto = new LeaveRequestDetailsDto { Id = query.LeaveRequestId };
+            var leaveRequest = new LeaveRequest { Id = query.Id };
+            var leaveRequestDetailsDto = new LeaveRequestDetailsDto { Id = query.Id };
 
             _mockValidator.Setup(v => v.ValidateAsync(query, It.IsAny<CancellationToken>()))
                           .ReturnsAsync(new ValidationResult());
-            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.LeaveRequestId)).ReturnsAsync(leaveRequest);
+            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.Id)).ReturnsAsync(leaveRequest);
             _mockMapper.Setup(m => m.Map<LeaveRequestDetailsDto>(leaveRequest)).Returns(leaveRequestDetailsDto);
 
             // Act
@@ -81,14 +81,14 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Queries
 
             _mockValidator.Setup(v => v.ValidateAsync(query, It.IsAny<CancellationToken>()))
                           .ReturnsAsync(new ValidationResult());
-            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.LeaveRequestId)).ReturnsAsync((LeaveRequest)null);
+            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.Id)).ReturnsAsync((LeaveRequest)null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             Assert.False(result.IsSuccess);
-            Assert.Equal($"The leave request with the Id = '{query.LeaveRequestId}' was not found", result.Error.Description);
+            Assert.Equal($"The leave request with the Id = '{query.Id}' was not found", result.Error.Description);
         }
 
         [Fact]
@@ -96,11 +96,11 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Queries
         {
             // Arrange
             var query = new GetLeaveRequestDetailsQuery(1);
-            var leaveRequest = new LeaveRequest { Id = query.LeaveRequestId };
+            var leaveRequest = new LeaveRequest { Id = query.Id };
 
             _mockValidator.Setup(v => v.ValidateAsync(query, It.IsAny<CancellationToken>()))
                           .ReturnsAsync(new ValidationResult());
-            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.LeaveRequestId)).ReturnsAsync(leaveRequest);
+            _mockLeaveRequestRepository.Setup(r => r.GetLeaveRequestWithDetails(query.Id)).ReturnsAsync(leaveRequest);
             _mockMapper.Setup(m => m.Map<LeaveRequestDetailsDto>(leaveRequest)).Returns((LeaveRequestDetailsDto)null);
 
             // Act
