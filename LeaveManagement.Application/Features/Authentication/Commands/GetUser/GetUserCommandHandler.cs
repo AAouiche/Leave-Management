@@ -1,5 +1,4 @@
-﻿using LeaveManagement.Domain.Common;
-using LeaveManagement.Domain.Identity;
+﻿using LeaveManagement.Shared.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Errors;
+using Identity.Authentication;
+using Identity.Dtos;
+using Identity.Interfaces;
 
 namespace LeaveManagement.Application.Features.Authentication.Commands.GetUser
 {

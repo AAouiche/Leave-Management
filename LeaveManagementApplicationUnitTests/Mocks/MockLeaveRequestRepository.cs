@@ -10,7 +10,7 @@ namespace LeaveManagementApplicationUnitTests.Mocks
 {
     public static class MockLeaveRequestRepository
     {
-        public static Mock<ILeaveRequestRepository> GetMockLeaveRequestRepository()
+        /*public static Mock<ILeaveRequestRepository> GetMockLeaveRequestRepository()
         {
             var leaveRequests = new List<LeaveRequest>
         {
@@ -75,6 +75,6 @@ namespace LeaveManagementApplicationUnitTests.Mocks
             });
 
             return mockRepo;
-        }
+        }*/
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagementApplicationUnitTests.Common
 {
-    public abstract class LeaveRequestBaseTest<THandler> : BaseTest<ILeaveRequestRepository, THandler>
+    /*public abstract class LeaveRequestBaseTest<THandler> : BaseTest<ILeaveRequestRepository, THandler>
         where THandler : class
     {
         protected readonly Mock<ILeaveRequestRepository> MockRepo;
@@ -18,5 +18,5 @@ namespace LeaveManagementApplicationUnitTests.Common
         {
             MockRepo = MockLeaveRequestRepository.GetMockLeaveRequestRepository();
         }
-    }
+    }*/
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagement.Application.Features.LeaveAllocations.Dtos;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveAllocation;
 using LeaveManagement.Domain.LeaveAllocations;
 using MediatR;

@@ -1,11 +1,11 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Shared.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Domain.Identity
+namespace Identity.Errors
 {
     public static class UserErrors
     {

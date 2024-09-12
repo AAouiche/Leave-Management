@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Domain.Common
+namespace LeaveManagement.Shared.Common
 {
     public interface IGenericRepository<T> where T : class
     {

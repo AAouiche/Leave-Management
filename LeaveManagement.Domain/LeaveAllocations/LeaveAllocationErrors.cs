@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

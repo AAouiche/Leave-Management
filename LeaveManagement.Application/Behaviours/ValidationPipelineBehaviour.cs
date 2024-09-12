@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;

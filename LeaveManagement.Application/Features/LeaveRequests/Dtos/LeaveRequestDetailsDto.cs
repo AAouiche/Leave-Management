@@ -1,4 +1,5 @@
-﻿using LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveTypes;
+﻿using Identity.Dtos;
+using LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Dtos
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RequestingEmployeeId { get; set; }
+        public UserDto Employee { get; set; }
         public LeaveTypeDto LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
         public DateTime DateRequested { get; set; }

@@ -1,4 +1,4 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 
 namespace LeaveManagement.Domain.LeaveTypes

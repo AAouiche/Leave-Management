@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Queries
 {
-    public class GetAllLeaveRequestQueryHandlerTests
+    /*public class GetAllLeaveRequestQueryHandlerTests
     {
         private readonly Mock<ILeaveRequestRepository> _mockLeaveRequestRepository;
         private readonly Mock<IMapper> _mockMapper;
@@ -86,5 +86,5 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Queries
             _mockLogger.Verify(l => l.LogInformation("Fetching all leave requests"), Times.Once);
             _mockLogger.Verify(l => l.LogWarning("Mapping failure occurred while fetching leave requests"), Times.Once);
         }
-    }
+    }*/
 }

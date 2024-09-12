@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using LeaveManagement.Domain.EmailService;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
@@ -11,6 +10,11 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using LeaveManagement.Domain.LeaveAllocations;
+
+using LeaveManagement.Domain.Interfaces;
+using Identity.Interfaces;
+using LeaveManagement.Application.Interfaces;
 
 namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeaveRequest
 {
@@ -20,13 +24,26 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
         private readonly IMapper _mapper;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly ILeaveRequestRepository _leaveRequestRepository;
+        private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly IAccessUser _accessUser;
+        private readonly ICloudStorageService _cloudStorageService;  // Use Google Drive service
 
-        public CreateLeaveRequestCommandHandler(IEmailSender emailSender, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, ILeaveRequestRepository leaveRequestRepository)
+        public CreateLeaveRequestCommandHandler(
+            IEmailSender emailSender,
+            IMapper mapper,
+            ILeaveTypeRepository leaveTypeRepository,
+            ILeaveRequestRepository leaveRequestRepository,
+            ILeaveAllocationRepository leaveAllocationRepository,
+            IAccessUser accessUser,
+            ICloudStorageService cloudStorageService)  
         {
             _emailSender = emailSender;
             _mapper = mapper;
-            this._leaveTypeRepository = leaveTypeRepository;
-            this._leaveRequestRepository = leaveRequestRepository;
+            _leaveTypeRepository = leaveTypeRepository;
+            _leaveRequestRepository = leaveRequestRepository;
+            _leaveAllocationRepository = leaveAllocationRepository;
+            _accessUser = accessUser;
+            _cloudStorageService = cloudStorageService; 
         }
 
         public async Task<Result<Unit>> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
@@ -39,16 +56,41 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
                 return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Invalid Leave Request"));
             }
 
-            
+            var employeeId = _accessUser.GetUserId();
 
-            
+            var allocation = await _leaveAllocationRepository.GetUserAllocations(employeeId, request.LeaveTypeId);
+
+            if (allocation is null)
+            {
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("You do not have any allocations for this leave type."));
+            }
+
+            int daysRequested = (int)(request.EndDate - request.StartDate).TotalDays;
+            if (daysRequested > allocation.NumberOfDays)
+            {
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("You do not have enough days for this request."));
+            }
+
             var leaveRequest = _mapper.Map<LeaveRequest>(request);
-            await _leaveRequestRepository.CreateAsync(leaveRequest);
+            leaveRequest.RequestingEmployeeId = employeeId;
+            leaveRequest.DateRequested = DateTime.Now;
 
+            
+            if (request.File != null)
+            {
+                var fileName = $"{employeeId}_{Guid.NewGuid()}_{request.File.FileName}";
+                using (var fileStream = request.File.OpenReadStream())
+                {
+                    await _cloudStorageService.UploadFileAsync(fileName, fileStream); 
+                    leaveRequest.FilePath = fileName;  
+                }
+            }
+
+            await _leaveRequestRepository.CreateAsync(leaveRequest);
 
             var email = new Email
             {
-                Reciever = string.Empty, 
+                Reciever = string.Empty,
                 MessageBody = $"Your leave request for {request.StartDate:D} to {request.EndDate:D} has been submitted successfully.",
                 Subject = "Leave Request Submitted"
             };
@@ -56,7 +98,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
             var emailResult = await _emailSender.SendEmail(email);
             if (!emailResult)
             {
-                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Invalid Leave Request"));
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Failed to send confirmation email."));
             }
 
             return Result<Unit>.Success(Unit.Value);

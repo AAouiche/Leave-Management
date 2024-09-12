@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using LeaveManagement.Domain.Authentication;
-using LeaveManagement.Domain.Common;
-using LeaveManagement.Domain.Identity;
-using LeaveManagement.Domain.Interfaces;
+
+using LeaveManagement.Shared.Common;
+
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,6 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Errors;
+using Identity.Authentication;
+using Identity.Dtos;
+using LeaveManagement.Identity.Interfaces;
 
 namespace LeaveManagement.Application.Features.Authentication.Commands
 {

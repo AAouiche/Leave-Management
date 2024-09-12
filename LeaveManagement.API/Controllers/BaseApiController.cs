@@ -1,4 +1,4 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Shared.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

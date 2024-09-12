@@ -12,69 +12,62 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LeaveManagement.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LeaveTypeController : BaseApiController
+    namespace LeaveManagement.API.Controllers
     {
-       
-        [HttpGet]
-        public async Task<ActionResult<List<LeaveTypeDto>>> GetAll()
+        [Route("api/[controller]")]
+        [ApiController]
+        public class LeaveTypeController : BaseApiController
         {
-            var query = new GetLeaveTypesQuery();
-            var result = await Mediator.Send(query);
-            return HandleResult(result);
-        }
-
-        
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LeaveTypeDetailsDto>> Get(int id)
-        {
-            var query = new GetLeaveTypesDetailsQuery(id);
-            var result = await Mediator.Send(query);
-            return HandleResult(result);
-        }
-
-       
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateLeaveTypeCommand leaveType)
-        {
-            if (leaveType == null)
+            [HttpGet]
+            public async Task<ActionResult<List<LeaveTypeDto>>> GetAll()
             {
-                return BadRequest("Invalid data.");
-            }
-            
-            var result = await Mediator.Send(leaveType);
-            if (result.IsSuccess)
-            {
-                return CreatedAtAction(nameof(Get), new { id = result.Value }, result.Value);
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
-        }
-
-        
-        [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Update(UpdateLeaveTypeCommand leaveType)
-        {
-            if (leaveType == null )
-            {
-                return BadRequest("Invalid data.");
+                var query = new GetLeaveTypesQuery();
+                var result = await Mediator.Send(query);
+                return HandleResult(result);
             }
 
-            
-            var result = await Mediator.Send(leaveType);
-            return HandleResult(result);
-        }
+            [HttpGet("{id}")]
+            public async Task<ActionResult<LeaveTypeDetailsDto>> Get(int id)
+            {
+                var query = new GetLeaveTypesDetailsQuery(id);
+                var result = await Mediator.Send(query);
+                return HandleResult(result);
+            }
 
-       
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
-        {
-            var command = new DeleteLeaveTypeCommand(id);
-            var result = await Mediator.Send(command);
-            return HandleResult(result);
+            [HttpPost("create")]
+            public async Task<IActionResult> Create(CreateLeaveTypeCommand leaveType)
+            {
+                if (leaveType == null)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                var result = await Mediator.Send(leaveType);
+                if (result.IsSuccess)
+                {
+                    return CreatedAtAction(nameof(Get), new { id = result.Value }, result.Value);
+                }
+                else
+                {
+                    return BadRequest(result.Error);
+                }
+            }
+
+            [HttpPut("update/{id}")]
+            public async Task<ActionResult<int>> Update(UpdateLeaveTypeCommand leaveType)
+            {
+                
+                var result = await Mediator.Send(leaveType);
+                return HandleResult(result);
+            }
+
+            [HttpDelete("delete/{id}")]
+            public async Task<ActionResult<int>> Delete(int id)
+            {
+                var command = new DeleteLeaveTypeCommand(id);
+                var result = await Mediator.Send(command);
+                return HandleResult(result);
+            }
         }
     }
 }

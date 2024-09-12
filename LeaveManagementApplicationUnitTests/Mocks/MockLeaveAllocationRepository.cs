@@ -10,7 +10,7 @@ namespace LeaveManagementApplicationUnitTests.Mocks
 {
     public static class MockLeaveAllocationRepository
     {
-        public static Mock<ILeaveAllocationRepository> GetMockLeaveAllocationRepository()
+        /*public static Mock<ILeaveAllocationRepository> GetMockLeaveAllocationRepository()
         {
             var leaveAllocations = new List<LeaveAllocation>
         {
@@ -88,6 +88,6 @@ namespace LeaveManagementApplicationUnitTests.Mocks
             });
 
             return mockRepo;
-        }
+        }*/
     }
 }

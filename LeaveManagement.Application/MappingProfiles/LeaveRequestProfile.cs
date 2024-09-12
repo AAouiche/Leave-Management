@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Authentication;
+using Identity.Dtos;
 
 namespace LeaveManagement.Application.MappingProfiles
 {
@@ -15,11 +17,26 @@ namespace LeaveManagement.Application.MappingProfiles
     {
         public LeaveRequestProfile()
         {
-            CreateMap<LeaveRequestListDto, LeaveRequest>().ReverseMap();
-            CreateMap<LeaveRequestDetailsDto, LeaveRequest>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestDetailsDto>();
+            // Mapping for LeaveRequest -> LeaveRequestListDto
+            CreateMap<LeaveRequest, LeaveRequestListDto>()
+                .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee != null ? src.Employee : null)) // Handle possible null
+                .ForMember(dest => dest.LeaveType, opt => opt.MapFrom(src => src.LeaveType != null ? src.LeaveType : null)) // Handle possible null
+                .ReverseMap();
+
+            // Mapping for LeaveRequest -> LeaveRequestDetailsDto
+            CreateMap<LeaveRequest, LeaveRequestDetailsDto>()
+                .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee != null ? src.Employee : null)) // Handle possible null
+                .ForMember(dest => dest.LeaveType, opt => opt.MapFrom(src => src.LeaveType != null ? src.LeaveType : null)) // Handle possible null
+                .ReverseMap();
+
+            // Mapping for CreateLeaveRequestCommand -> LeaveRequest
             CreateMap<CreateLeaveRequestCommand, LeaveRequest>();
+
+            // Mapping for UpdateLeaveRequestCommand -> LeaveRequest
             CreateMap<UpdateLeaveRequestCommand, LeaveRequest>();
+
+            // Mapping for ApplicationUser -> UserDto
+            CreateMap<ApplicationUser, UserDto>();
         }
     }
 }

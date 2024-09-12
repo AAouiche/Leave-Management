@@ -20,7 +20,7 @@ namespace LeaveManagement.Application.Features.Authentication.Commands
                 .NotEmpty().WithMessage("Password is required.")
                 .MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
 
-            // If you have any specific rules for RememberMe, add them here
+            
             RuleFor(x => x.RememberMe)
                 .NotNull().WithMessage("RememberMe selection is required.");
         }

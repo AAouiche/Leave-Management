@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using System;

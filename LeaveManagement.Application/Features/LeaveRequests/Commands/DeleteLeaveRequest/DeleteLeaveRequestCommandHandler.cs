@@ -1,4 +1,4 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveRequests;
 using MediatR;
 using System;

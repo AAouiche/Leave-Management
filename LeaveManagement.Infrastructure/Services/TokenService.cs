@@ -1,5 +1,4 @@
-﻿using LeaveManagement.Domain.Identity;
-using LeaveManagement.Domain.Interfaces;
+﻿using LeaveManagement.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,6 +8,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Authentication;
+using Identity.Dtos;
+using LeaveManagement.Identity.Interfaces;
 
 namespace LeaveManagement.Infrastructure.Services
 {

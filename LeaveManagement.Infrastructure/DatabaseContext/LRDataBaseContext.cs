@@ -1,5 +1,4 @@
-﻿using LeaveManagement.Domain.Common;
-using LeaveManagement.Domain.Identity;
+﻿using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveAllocations;
 
 using LeaveManagement.Domain.LeaveRequests;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Authentication;
 
 namespace LeaveManagement.Infrastructure.DatabaseContext
 {

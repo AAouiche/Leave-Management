@@ -23,9 +23,9 @@ namespace LeaveManagement.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> AllocationExists(int userId, int leaveTypeId, int period)
+        public async Task<bool> AllocationExists(string userId, int leaveTypeId, int period)
         {
-            return await _context.LeaveAllocation.AnyAsync(q => q.Id == userId
+            return await _context.LeaveAllocation.AnyAsync(q => q.EmployeeId == userId
                                         && q.LeaveTypeId == leaveTypeId
                                         && q.Period == period);
         }
@@ -55,9 +55,9 @@ namespace LeaveManagement.Infrastructure.Repositories
             return leaveAllocation;
         }
 
-        public async Task<LeaveAllocation> GetUserAllocations(int userId, int leaveTypeId)
+        public async Task<LeaveAllocation> GetUserAllocations(string userId, int leaveTypeId)
         {
-            return await _context.LeaveAllocation.FirstOrDefaultAsync(q => q.Id == userId
+            return await _context.LeaveAllocation.FirstOrDefaultAsync(q => q.EmployeeId == userId
                                         && q.LeaveTypeId == leaveTypeId);
         }
     }

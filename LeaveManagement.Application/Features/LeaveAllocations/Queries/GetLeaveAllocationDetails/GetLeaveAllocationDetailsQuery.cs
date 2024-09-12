@@ -1,5 +1,5 @@
 ﻿using LeaveManagement.Application.Features.LeaveAllocations.Dtos;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;

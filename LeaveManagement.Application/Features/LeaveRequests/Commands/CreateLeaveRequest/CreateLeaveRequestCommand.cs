@@ -1,7 +1,8 @@
 ﻿using LeaveManagement.Application.Features.LeaveRequests.Base;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
     public class CreateLeaveRequestCommand : BaseLeaveRequest, IRequest<Result<Unit>>
     {
         public string RequestComments { get; set; } = string.Empty;
+        public IFormFile? File { get; set; } 
     }
 }

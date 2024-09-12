@@ -1,6 +1,6 @@
 ﻿using LeaveManagement.Application.Features.LeaveTypes.Dtos;
 using LeaveManagement.Application.Features.LeaveTypes.Queries.GetLeaveTypes;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;

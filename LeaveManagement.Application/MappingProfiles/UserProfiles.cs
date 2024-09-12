@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using LeaveManagement.Domain.Identity;
+using Identity.Authentication;
+using Identity.Dtos;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,13 @@ using System.Threading.Tasks;
 
 namespace LeaveManagement.Application.MappingProfiles
 {
-    public class MappingProfile : Profile
+    public class UserProfiles : Profile
     {
-        public MappingProfile()
+        public UserProfiles()
         {
             CreateMap<ApplicationUser, UserDto>()
-            .ForMember(dest => dest.Role, opt => opt.Ignore()) 
-            .AfterMap(async (src, dest, ctx) =>
-            {
-                var userManager = ctx.Items["UserManager"] as UserManager<ApplicationUser>;
-                var roles = await userManager.GetRolesAsync(src);
-                dest.Role = roles.FirstOrDefault();
-            });
+                .ForMember(dest => dest.Role, opt => opt.Ignore());
+
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using LeaveManagement.Domain.Common;
+﻿
+
 using LeaveManagement.Domain.LeaveTypes;
+using LeaveManagement.Shared.Common;
 
 
 namespace LeaveManagement.Domain.LeaveAllocations

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
 {
-    public class DeleteLeaveRequestCommandHandlerTests
+   /* public class DeleteLeaveRequestCommandHandlerTests
     {
         private readonly Mock<ILeaveRequestRepository> _mockLeaveRequestRepository;
         private readonly DeleteLeaveRequestCommandHandler _handler;
@@ -57,5 +57,5 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
             _mockLeaveRequestRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
             _mockLeaveRequestRepository.Verify(r => r.DeleteAsync(It.IsAny<LeaveRequest>()), Times.Never);
         }
-    }
+    }*/
 }

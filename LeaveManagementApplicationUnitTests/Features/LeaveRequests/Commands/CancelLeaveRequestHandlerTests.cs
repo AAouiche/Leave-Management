@@ -1,7 +1,6 @@
-﻿using LeaveManagement.Domain.EmailService;
-using LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeaveRequest;
+﻿using LeaveManagement.Application.Features.LeaveRequests.Commands.CancelLeaveRequest;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.EmailMessage;
+
 using LeaveManagement.Domain.LeaveRequests;
 using Moq;
 using System;
@@ -9,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.Interfaces;
 
 namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
 {
@@ -56,8 +57,13 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveRequests.Commands
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenRequestDoesNotExist()
         {
-            // Arrange
+            #region arrange
             var command = new CancelLeaveRequestCommand(1);
+            #endregion
+#if DEBUG
+#endif
+
+            //var command = new CancelLeaveRequestCommand(1);
 
             _mockLeaveRequestRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync((LeaveRequest)null);
 

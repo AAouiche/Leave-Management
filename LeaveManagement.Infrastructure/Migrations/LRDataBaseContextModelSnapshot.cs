@@ -22,7 +22,7 @@ namespace LeaveManagement.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LeaveManagement.Domain.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("LeaveManagement.Identity.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -152,8 +152,14 @@ namespace LeaveManagement.Infrastructure.Migrations
                     b.Property<DateTime>("DateRequested")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
@@ -169,6 +175,8 @@ namespace LeaveManagement.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("LeaveTypeId");
 
@@ -347,11 +355,17 @@ namespace LeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("LeaveManagement.Domain.LeaveRequests.LeaveRequest", b =>
                 {
+                    b.HasOne("LeaveManagement.Identity.Identity.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("LeaveManagement.Domain.LeaveTypes.LeaveType", "LeaveType")
                         .WithMany()
                         .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("LeaveType");
                 });
@@ -367,7 +381,7 @@ namespace LeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("LeaveManagement.Domain.Identity.ApplicationUser", null)
+                    b.HasOne("LeaveManagement.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -376,7 +390,7 @@ namespace LeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("LeaveManagement.Domain.Identity.ApplicationUser", null)
+                    b.HasOne("LeaveManagement.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -391,7 +405,7 @@ namespace LeaveManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LeaveManagement.Domain.Identity.ApplicationUser", null)
+                    b.HasOne("LeaveManagement.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -400,7 +414,7 @@ namespace LeaveManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("LeaveManagement.Domain.Identity.ApplicationUser", null)
+                    b.HasOne("LeaveManagement.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,7 +1,5 @@
-﻿
-
-using LeaveManagement.Domain.EmailService;
-using LeaveManagement.Domain.Entities.Email;
+﻿using LeaveManagement.Domain.Entities.Email;
+using LeaveManagement.Domain.Interfaces;
 using LeaveManagement.Domain.Models.EmailMessage;
 using Microsoft.Extensions.Options;
 using SendGrid;

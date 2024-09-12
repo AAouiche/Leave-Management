@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Domain.Identity
+namespace Identity.Authentication
 {
     public class ApplicationUser : IdentityUser
     {

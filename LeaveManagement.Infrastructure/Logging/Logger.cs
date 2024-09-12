@@ -1,6 +1,6 @@
 ﻿using LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using Microsoft.Extensions.Logging;

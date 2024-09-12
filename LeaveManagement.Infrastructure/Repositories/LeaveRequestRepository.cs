@@ -1,4 +1,5 @@
 ﻿
+using LeaveManagement.Application.Features.LeaveRequests.Dtos;
 using LeaveManagement.Domain.LeaveAllocations;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
@@ -19,31 +20,29 @@ namespace LeaveManagement.Infrastructure.Repositories
         {
         }
 
-        public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails()
+        public async Task<List<LeaveRequest>> GetAllWithDetailsAsync()
         {
-            var leaveRequests = await _context.LeaveRequests
-                .Where(q => !string.IsNullOrEmpty(q.RequestingEmployeeId))
-                .Include(q => q.LeaveType)
+            return await _context.LeaveRequests
+                .Include(lr => lr.Employee)
+                .Include(lr => lr.LeaveType)
                 .ToListAsync();
-            return leaveRequests;
         }
 
-        public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails(string userId)
+        public async Task<List<LeaveRequest>> GetAllByUserWithDetailsAsync(string userId)
         {
-            var leaveRequests = await _context.LeaveRequests
-                .Where(q => q.RequestingEmployeeId == userId)
-                .Include(q => q.LeaveType)
+            return await _context.LeaveRequests
+                .Where(lr => lr.RequestingEmployeeId == userId)
+                .Include(lr => lr.Employee)
+                .Include(lr => lr.LeaveType)
                 .ToListAsync();
-            return leaveRequests;
         }
 
-        public async Task<LeaveRequest> GetLeaveRequestWithDetails(int id)
+        public async Task<LeaveRequest> GetByIdWithDetailsAsync(int id)
         {
-            var leaveRequest = await _context.LeaveRequests
-                .Include(q => q.LeaveType)
-                .FirstOrDefaultAsync(q => q.Id == id);
-
-            return leaveRequest;
+            return await _context.LeaveRequests
+                .Include(lr => lr.Employee)
+                .Include(lr => lr.LeaveType)
+                .FirstOrDefaultAsync(lr => lr.Id == id);
         }
     }
 }

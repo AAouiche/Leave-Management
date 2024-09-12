@@ -8,12 +8,15 @@ using LeaveManagement.Application.Features.LeaveRequests.Queries.GetAllQueries;
 using LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveRequestDetails;
 using LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LeaveManagement.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class LeaveRequestController : BaseApiController
     {
@@ -34,7 +37,7 @@ namespace LeaveManagement.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CreateLeaveRequestCommand leaveRequest)
+        public async Task<IActionResult> Create([FromForm] CreateLeaveRequestCommand leaveRequest)
         {
             if (leaveRequest == null)
             {

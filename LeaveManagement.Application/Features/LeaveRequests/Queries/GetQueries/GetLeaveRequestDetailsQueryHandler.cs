@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LeaveManagement.Application.Features.LeaveRequests.Dtos;
+using LeaveManagement.Application.Features.LeaveRequests.Queries.GetAllQueries;
 using LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveRequestDetails;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Application.Logging;
+
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveRequests;
 using MediatR;
 using System;
@@ -10,44 +13,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.Interfaces;
 
 namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
 {
-    public class GetLeaveRequestDetailsQueryHandler : IRequestHandler<GetLeaveRequestDetailsQuery, Result<LeaveRequestDetailsDto>>
+    public class GetAllLeaveRequestQueryHandler : IRequestHandler<GetAllLeaveRequestQuery, Result<List<LeaveRequestListDto>>>
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
+        private readonly IAppLogger<GetAllLeaveRequestQueryHandler> _logger;
+        private readonly IAccessUser _accessUser;
         private readonly IMapper _mapper;
-        private readonly IValidator<GetLeaveRequestDetailsQuery> _validator;
 
-        public GetLeaveRequestDetailsQueryHandler(ILeaveRequestRepository leaveRequestRepository, IMapper mapper, IValidator<GetLeaveRequestDetailsQuery> validator)
+        public GetAllLeaveRequestQueryHandler(ILeaveRequestRepository leaveRequestRepository, IAppLogger<GetAllLeaveRequestQueryHandler> logger, IAccessUser accessUser, IMapper mapper)
         {
             _leaveRequestRepository = leaveRequestRepository;
+            _logger = logger;
+            _accessUser = accessUser;
             _mapper = mapper;
-            _validator = validator;
         }
 
-        public async Task<Result<LeaveRequestDetailsDto>> Handle(GetLeaveRequestDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<LeaveRequestListDto>>> Handle(GetAllLeaveRequestQuery query, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
+            _logger.LogInformation("Fetching leave requests based on the user's role");
+
+            
+            var role = await _accessUser.GetRole();
+            var isAdmin = role == "Admin";
+
+            
+            List<LeaveRequest> leaveRequests;
+            if (isAdmin)
             {
-                
-                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.ValidationFailure(validationResult.Errors.First().ErrorMessage));
+                leaveRequests = await _leaveRequestRepository.GetAllWithDetailsAsync();
+                _logger.LogInformation($"Fetched {leaveRequests.Count} leave requests for all users.");
+            }
+            else
+            {
+                var userId = _accessUser.GetUserId();
+                leaveRequests = await _leaveRequestRepository.GetAllByUserWithDetailsAsync(userId);
+                _logger.LogInformation($"Fetched {leaveRequests.Count} leave requests for user ID {userId}.");
             }
 
-            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.Id);
-            if (leaveRequest == null)
-            {
-                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(request.Id));
-            }
+            
+            var mappedLeaveRequests = _mapper.Map<List<LeaveRequestListDto>>(leaveRequests);
 
-            var leaveRequestDetails = _mapper.Map<LeaveRequestDetailsDto>(leaveRequest);
-            if (leaveRequestDetails == null)
-            {
-                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.MappingFailure());
-            }
-
-            return Result.Success(leaveRequestDetails);
+            _logger.LogInformation("Successfully fetched and mapped leave requests");
+            return Result.Success(mappedLeaveRequests);
         }
     }
 }

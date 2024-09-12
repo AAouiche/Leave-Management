@@ -1,4 +1,5 @@
-﻿using LeaveManagement.Domain.Common;
+﻿using LeaveManagement.Shared.Common;
+using Identity.Authentication;
 using LeaveManagement.Domain.LeaveTypes;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,8 @@ namespace LeaveManagement.Domain.LeaveRequests
         public bool Cancelled { get; set; }
 
         public string RequestingEmployeeId { get; set; } = string.Empty;
+        public ApplicationUser Employee { get; set; }
+        public string? FilePath { get; set; }
 
     }
 }

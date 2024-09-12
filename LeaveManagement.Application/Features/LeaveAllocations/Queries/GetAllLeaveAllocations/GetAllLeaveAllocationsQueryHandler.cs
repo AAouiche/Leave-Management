@@ -2,7 +2,7 @@
 using LeaveManagement.Application.Features.LeaveAllocations.Dtos;
 using LeaveManagement.Application.Features.LeaveAllocations.Queries.GetAllLeaveAllocations;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveAllocation;
 using LeaveManagement.Domain.LeaveAllocations;
 using MediatR;

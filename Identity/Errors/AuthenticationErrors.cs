@@ -1,12 +1,12 @@
 ﻿using FluentValidation.Results;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeaveManagement.Domain.Authentication
+namespace Identity.Errors
 {
     public static class AuthenticationErrors
     {
@@ -35,5 +35,17 @@ namespace LeaveManagement.Domain.Authentication
             var errors = string.Join(", ", failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}"));
             return Error.Validation("Authentication.ValidationFailure", $"Validation failed: {errors}");
         }
+        // Registration-specific errors
+        public static Error EmailAlreadyInUse(string email) => Error.Conflict(
+            "Authentication.EmailAlreadyInUse",
+            $"The email '{email}' is already in use. Please use a different email address.");
+
+        public static Error WeakPassword() => Error.Validation(
+            "Authentication.WeakPassword",
+            "The password does not meet the security requirements.");
+
+        public static Error UserCreationFailed(IEnumerable<string> errors) => Error.Failure(
+            "Authentication.UserCreationFailed",
+            $"User creation failed: {string.Join(", ", errors)}");
     }
 }

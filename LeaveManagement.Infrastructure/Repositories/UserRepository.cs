@@ -1,4 +1,5 @@
-﻿using LeaveManagement.Domain.Identity;
+﻿using Identity.Authentication;
+using Identity.Interfaces;
 using LeaveManagement.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;

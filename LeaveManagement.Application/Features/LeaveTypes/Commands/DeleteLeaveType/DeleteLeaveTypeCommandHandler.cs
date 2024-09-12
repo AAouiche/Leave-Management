@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using LeaveManagement.Application.Features.LeaveTypes.Commands.CreateLeaveType;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using System;
@@ -30,7 +30,7 @@ namespace LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveTy
 
         public async Task<Result<int>> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
         {
-            // Validate the command
+            
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {

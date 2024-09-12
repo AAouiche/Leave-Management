@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using LeaveManagement.Domain.EmailService;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.Entities.Email;
 using LeaveManagement.Domain.LeaveRequests;
 using LeaveManagement.Domain.LeaveTypes;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using LeaveManagement.Domain.Interfaces;
 
 namespace LeaveManagement.Application.Features.LeaveRequests.Commands.UpdateLeaveRequest
 {

@@ -2,7 +2,7 @@
 using FluentValidation;
 using LeaveManagement.Application.Features.LeaveTypes.Commands.UpdateLeaveType;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using Moq;
 using System;

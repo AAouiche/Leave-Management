@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LeaveManagement.Application.Features.LeaveTypes.Dtos;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using MediatR;
 using System;

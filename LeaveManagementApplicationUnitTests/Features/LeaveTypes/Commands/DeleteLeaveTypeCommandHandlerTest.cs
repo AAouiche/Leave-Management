@@ -2,7 +2,7 @@
 using FluentValidation;
 using LeaveManagement.Application.Features.LeaveTypes.Commands.DeleteLeaveType;
 using LeaveManagement.Application.Logging;
-using LeaveManagement.Domain.Common;
+using LeaveManagement.Shared.Common;
 using LeaveManagement.Domain.LeaveTypes;
 using Moq;
 using System;

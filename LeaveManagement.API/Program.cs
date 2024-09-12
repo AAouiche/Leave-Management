@@ -8,7 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using LeaveManagement.Infrastructure.Seed;
-using LeaveManagement.Domain.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Identity.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +46,43 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+
+var jwtKey = builder.Configuration["JwtConfig:Key"];
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = key,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (context.HttpContext.WebSockets.IsWebSocketRequest || context.Request.Headers["Accept"] == "text/event-stream"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
+        /*options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+
+                System.Console.WriteLine(context.Exception);
+                return Task.CompletedTask;
+            },
+        };*/
+    });
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
@@ -79,7 +119,7 @@ app.UseHttpsRedirection();
 app.UseExceptionHandler();
 app.UseCors();
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllers();
 
 app.Run();

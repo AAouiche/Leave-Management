@@ -14,7 +14,7 @@ namespace LeaveManagement.API.Controllers
     [ApiController]
     public class LeaveAllocationController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("getall")]
         public async Task<ActionResult<List<LeaveAllocationDto>>> GetAll()
         {
             var query = new GetAllLeaveAllocationQuery();
@@ -22,7 +22,7 @@ namespace LeaveManagement.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<LeaveAllocationDetailsDto>> Get(int id)
         {
             var query = new GetLeaveAllocationDetailsQuery(id);
@@ -30,7 +30,7 @@ namespace LeaveManagement.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(CreateLeaveAllocationCommand leaveAllocation)
         {
             if (leaveAllocation == null)
@@ -49,7 +49,7 @@ namespace LeaveManagement.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<ActionResult<Unit>> Update( UpdateLeaveAllocationCommand leaveAllocation)
         {
             if (leaveAllocation == null)
@@ -62,7 +62,7 @@ namespace LeaveManagement.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult<Unit>> Delete(int id)
         {
             var command = new DeleteLeaveAllocationCommand(id);

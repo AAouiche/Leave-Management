@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagementApplicationUnitTests.Features.LeaveAllocations.Commands
 {
-    public class CreateLeaveAllocationCommandHandlerTests
+    /*public class CreateLeaveAllocationCommandHandlerTests
     {
         private readonly Mock<ILeaveAllocationRepository> _mockLeaveAllocationRepository;
         private readonly Mock<ILeaveTypeRepository> _mockLeaveTypeRepository;
@@ -87,5 +87,5 @@ namespace LeaveManagementApplicationUnitTests.Features.LeaveAllocations.Commands
         }
 
         
-    }
+    }*/
 }

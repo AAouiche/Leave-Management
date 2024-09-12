@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LeaveManagement.Domain.Common
+namespace LeaveManagement.Shared.Common
 {
     public class Result
     {
