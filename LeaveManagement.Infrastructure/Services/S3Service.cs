@@ -4,6 +4,7 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using LeaveManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,15 @@ namespace LeaveManagement.Infrastructure.Services
 {
     public class S3Service : IS3Service
     {
-        private readonly string _bucketName = "filestorage2910"; 
+        private readonly string _bucketName; 
         private readonly IAmazonS3 _s3Client;
+        private readonly IConfiguration _configuration;
 
-        public S3Service()
+        public S3Service(IConfiguration configuration, IAmazonS3 s3Client)
         {
-            
-            _s3Client = new AmazonS3Client(Amazon.RegionEndpoint.EUNorth1); 
+            _configuration = configuration;
+            _bucketName = _configuration["AWS:BucketName"]!;
+            _s3Client = s3Client;
         }
 
         public async Task<string> UploadFileAsync(IFormFile file)
