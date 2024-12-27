@@ -16,6 +16,8 @@ using LeaveManagement.Domain.Interfaces;
 using Identity.Interfaces;
 using LeaveManagement.Application.Interfaces;
 using LeaveManagement.Application.Logging;
+using Identity.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeaveRequest
 {
@@ -28,17 +30,19 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly IAccessUser _accessUser;
         private readonly IS3Service _s3Service;
-        private readonly IAppLogger<CreateLeaveRequestCommandHandler> _logger; 
+        private readonly IAppLogger<CreateLeaveRequestCommandHandler> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public CreateLeaveRequestCommandHandler(
-            IEmailSender emailSender,
-            IMapper mapper,
-            ILeaveTypeRepository leaveTypeRepository,
-            ILeaveRequestRepository leaveRequestRepository,
-            ILeaveAllocationRepository leaveAllocationRepository,
-            IAccessUser accessUser,
-            IS3Service s3Service,
-            IAppLogger<CreateLeaveRequestCommandHandler> logger)  
+         IEmailSender emailSender,
+         IMapper mapper,
+         ILeaveTypeRepository leaveTypeRepository,
+         ILeaveRequestRepository leaveRequestRepository,
+         ILeaveAllocationRepository leaveAllocationRepository,
+         IAccessUser accessUser,
+         IS3Service s3Service,
+         IAppLogger<CreateLeaveRequestCommandHandler> logger,
+         UserManager<ApplicationUser> userManager)  
         {
             _emailSender = emailSender;
             _mapper = mapper;
@@ -47,7 +51,8 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
             _leaveAllocationRepository = leaveAllocationRepository;
             _accessUser = accessUser;
             _s3Service = s3Service;
-            _logger = logger; 
+            _logger = logger;
+            _userManager = userManager; 
         }
 
         public async Task<Result<Unit>> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
@@ -65,6 +70,14 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
 
             var employeeId = _accessUser.GetUserId();
 
+            // Fetch the employee entity from the UserManager
+            var employee = await _userManager.FindByIdAsync(employeeId);
+            if (employee == null)
+            {
+                _logger.LogWarning("User with ID {UserId} not found.", employeeId);
+                return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("User not found."));
+            }
+
             var allocation = await _leaveAllocationRepository.GetUserAllocations(employeeId, request.LeaveTypeId);
 
             if (allocation is null)
@@ -80,8 +93,10 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
                 return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("You do not have enough days for this request."));
             }
 
+
             var leaveRequest = _mapper.Map<LeaveRequest>(request);
             leaveRequest.RequestingEmployeeId = employeeId;
+            leaveRequest.Employee = employee; 
             leaveRequest.DateRequested = DateTime.Now;
 
             if (request.File != null)
@@ -102,7 +117,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
             await _leaveRequestRepository.CreateAsync(leaveRequest);
             _logger.LogInformation("Leave request created successfully for user ID: {UserId}", employeeId);
 
-            var email = new Email
+            /*var email = new Email
             {
                 Reciever = string.Empty, 
                 MessageBody = $"Your leave request for {request.StartDate:D} to {request.EndDate:D} has been submitted successfully.",
@@ -116,7 +131,7 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Commands.CreateLeav
                 return Result.Failure<Unit>(LeaveRequestErrors.ValidationFailure("Failed to send confirmation email."));
             }
 
-            _logger.LogInformation("Confirmation email sent successfully to user ID: {UserId}", employeeId);
+            _logger.LogInformation("Confirmation email sent successfully to user ID: {UserId}", employeeId);*/
 
             return Result<Unit>.Success(Unit.Value);
         }

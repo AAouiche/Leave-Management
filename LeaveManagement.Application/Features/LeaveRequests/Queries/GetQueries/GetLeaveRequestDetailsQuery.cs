@@ -11,10 +11,6 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetLeaveReq
 {
     public class GetLeaveRequestDetailsQuery : IRequest<Result<LeaveRequestDetailsDto>>
     {
-        public GetLeaveRequestDetailsQuery(int LeaveRequestId)
-        {
-            Id = LeaveRequestId;
-        }
 
         public int Id { get; set; }
     }

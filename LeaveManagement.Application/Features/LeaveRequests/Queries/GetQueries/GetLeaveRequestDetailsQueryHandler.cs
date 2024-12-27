@@ -17,14 +17,18 @@ using Identity.Interfaces;
 
 namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
 {
-    public class GetAllLeaveRequestQueryHandler : IRequestHandler<GetAllLeaveRequestQuery, Result<List<LeaveRequestListDto>>>
+    public class GetLeaveRequestDetailsQueryHandler : IRequestHandler<GetLeaveRequestDetailsQuery, Result<LeaveRequestDetailsDto>>
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
-        private readonly IAppLogger<GetAllLeaveRequestQueryHandler> _logger;
+        private readonly IAppLogger<GetLeaveRequestDetailsQueryHandler> _logger;
         private readonly IAccessUser _accessUser;
         private readonly IMapper _mapper;
 
-        public GetAllLeaveRequestQueryHandler(ILeaveRequestRepository leaveRequestRepository, IAppLogger<GetAllLeaveRequestQueryHandler> logger, IAccessUser accessUser, IMapper mapper)
+        public GetLeaveRequestDetailsQueryHandler(
+            ILeaveRequestRepository leaveRequestRepository,
+            IAppLogger<GetLeaveRequestDetailsQueryHandler> logger,
+            IAccessUser accessUser,
+            IMapper mapper)
         {
             _leaveRequestRepository = leaveRequestRepository;
             _logger = logger;
@@ -32,33 +36,36 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetQueries
             _mapper = mapper;
         }
 
-        public async Task<Result<List<LeaveRequestListDto>>> Handle(GetAllLeaveRequestQuery query, CancellationToken cancellationToken)
+        public async Task<Result<LeaveRequestDetailsDto>> Handle(GetLeaveRequestDetailsQuery query, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Fetching leave requests based on the user's role");
+            _logger.LogInformation("Fetching leave request details based on the user's role");
 
-            
             var role = await _accessUser.GetRole();
             var isAdmin = role == "Admin";
 
-            
-            List<LeaveRequest> leaveRequests;
+            LeaveRequest leaveRequest;
             if (isAdmin)
             {
-                leaveRequests = await _leaveRequestRepository.GetAllWithDetailsAsync();
-                _logger.LogInformation($"Fetched {leaveRequests.Count} leave requests for all users.");
+                leaveRequest = await _leaveRequestRepository.GetByIdWithDetailsAsync(query.Id);
+                _logger.LogInformation($"Fetched leave request ID {query.Id} for all users.");
             }
             else
             {
-                var userId = _accessUser.GetUserId();
-                leaveRequests = await _leaveRequestRepository.GetAllByUserWithDetailsAsync(userId);
-                _logger.LogInformation($"Fetched {leaveRequests.Count} leave requests for user ID {userId}.");
+                
+                leaveRequest = await _leaveRequestRepository.GetByIdWithDetailsAsync(query.Id);
+                _logger.LogInformation($"Fetched leave request ID {query.Id}.");
             }
 
-            
-            var mappedLeaveRequests = _mapper.Map<List<LeaveRequestListDto>>(leaveRequests);
+            if (leaveRequest == null)
+            {
+                _logger.LogWarning($"Leave request ID {query.Id} not found.");
+                return Result.Failure<LeaveRequestDetailsDto>(LeaveRequestErrors.NotFound(query.Id));
+            }
 
-            _logger.LogInformation("Successfully fetched and mapped leave requests");
-            return Result.Success(mappedLeaveRequests);
+            var mappedLeaveRequest = _mapper.Map<LeaveRequestDetailsDto>(leaveRequest);
+
+            _logger.LogInformation("Successfully fetched and mapped leave request details");
+            return Result.Success(mappedLeaveRequest);
         }
     }
 }

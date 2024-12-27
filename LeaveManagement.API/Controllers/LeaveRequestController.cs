@@ -31,7 +31,7 @@ namespace LeaveManagement.API.Controllers
         [HttpGet("get/{id}")]
         public async Task<ActionResult<LeaveRequestDetailsDto>> Get(int id)
         {
-            var query = new GetLeaveRequestDetailsQuery(id);
+            var query = new GetLeaveRequestDetailsQuery{ Id = id };
             var result = await Mediator.Send(query);
             return HandleResult(result);
         }

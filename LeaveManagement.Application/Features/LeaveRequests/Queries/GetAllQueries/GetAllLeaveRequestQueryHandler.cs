@@ -70,6 +70,8 @@ namespace LeaveManagement.Application.Features.LeaveRequests.Queries.GetAllQueri
 
                 mappedLeaveRequests.Add(new LeaveRequestListDto
                 {
+
+                    Id=request.Id,
                     RequestingEmployeeId = request.RequestingEmployeeId,
                     Employee = new UserDto
                     {

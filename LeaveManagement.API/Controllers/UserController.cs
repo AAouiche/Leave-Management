@@ -30,8 +30,6 @@ namespace LeaveManagement.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginCommand loginCommand)
         {
-           
-
             var result = await Mediator.Send(loginCommand);
             return HandleResult(result);
         }
